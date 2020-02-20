@@ -7,30 +7,24 @@ import renderWithHelmet from './renderWithHelmet';
 const removeWrappingDiv = container => container.firstChild;
 
 const createSnapshot = container => {
-  const hasOneChild = container.children.length === 1;
+  //const hasOneChild = container.children.length === 1;
   /*
    * if the container has more than one child then it's a component that uses a
    * fragment at the top level so we should not select the first child because it
    * wouldn't snapshot the whole component
    */
-  expect(
-    hasOneChild ? removeWrappingDiv(container) : container,
-  ).toMatchSnapshot();
+  expect(container).toMatchSnapshot();
 };
 
 export const shouldMatchSnapshot = (title, component) => {
   it(title, done => {
-    renderWithHelmet(component).then(({ container }) => {
-      createSnapshot(container);
-      done();
-    });
+    createSnapshot(component);
+    done();
   });
 };
 
-export const matchSnapshotAsync = component => {
-  return renderWithHelmet(component).then(({ container }) => {
-    createSnapshot(container);
-  });
+export const matchSnapshotAsync = async component => {
+  return createSnapshot(component);
 };
 
 export const isNull = (title, component) => {
