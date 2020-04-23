@@ -82,38 +82,59 @@ const isFiveOrTen = ({ listIndex, service, numberOfItems }) => {
 
 const OneColumnWrapper = styled.div`
   @media (max-width: ${GEL_GROUP_0_SCREEN_WIDTH_MAX}) {
-    min-width: ${props =>
-      listHasDoubleDigits(props.numberOfItems)
-        ? getRankMinWidth(props).group0WithOneColumn
-        : getRankMinWidth(props).group0};
+    min-width: ${props => {
+      if (listHasDoubleDigits(props.numberOfItems)) {
+        console.log('minwidth: ', getRankMinWidth(props).group0WithOneColumn);
+        return props.children.props.typography === 'trafalgar'
+          ? getRankMinWidth(props).group0WithOneColumn // TODO update
+          : getRankMinWidth(props).group0WithOneColumn;
+      }
+      return getRankMinWidth(props).group0;
+    }};
   }
   @media (min-width: ${GEL_GROUP_1_SCREEN_WIDTH_MIN}) and (max-width: ${GEL_GROUP_1_SCREEN_WIDTH_MAX}) {
-    min-width: ${props =>
-      listHasDoubleDigits(props.numberOfItems)
-        ? getRankMinWidth(props).group1WithOneColumn
-        : getRankMinWidth(props).group1};
+    min-width: ${props => {
+      if (listHasDoubleDigits(props.numberOfItems)) {
+        return props.children.props.typography === 'trafalgar'
+          ? getRankMinWidth(props).group1WithOneColumn // TODO update
+          : getRankMinWidth(props).group1WithOneColumn;
+      }
+      return getRankMinWidth(props).group1;
+    }};
   }
   @media (min-width: ${GEL_GROUP_2_SCREEN_WIDTH_MIN}) and (max-width: ${GEL_GROUP_2_SCREEN_WIDTH_MAX}) {
-    min-width: ${props =>
-      listHasDoubleDigits(props.numberOfItems)
-        ? getRankMinWidth(props).group2WithOneColumn
-        : getRankMinWidth(props).group2};
+    min-width: ${props => {
+      if (listHasDoubleDigits(props.numberOfItems)) {
+        return props.children.props.typography === 'trafalgar'
+          ? getRankMinWidth(props).group2WithOneColumn // TODO update
+          : getRankMinWidth(props).group2WithOneColumn;
+      }
+      return getRankMinWidth(props).group2;
+    }};
   }
 
   @media (min-width: ${GEL_GROUP_3_SCREEN_WIDTH_MIN}) {
-    min-width: ${props =>
-      listHasDoubleDigits(props.numberOfItems)
-        ? getRankMinWidth(props).group3WithOneColumn
-        : 'auto'};
+    min-width: ${props => {
+      if (listHasDoubleDigits(props.numberOfItems)) {
+        return props.children.props.typography === 'trafalgar'
+          ? getRankMinWidth(props).group3WithOneColumn // TODO update
+          : getRankMinWidth(props).group3WithOneColumn;
+      }
+      return 'auto';
+    }};
   }
 
   /* different number order for when css grid is supported  */
   @supports (${grid}) {
     @media (min-width: ${GEL_GROUP_3_SCREEN_WIDTH_MIN}) {
-      min-width: ${props =>
-        listHasDoubleDigits(props.numberOfItems)
-          ? getRankMinWidth(props).group3WithOneColumn
-          : 'auto'};
+      min-width: ${props => {
+        if (listHasDoubleDigits(props.numberOfItems)) {
+          return props.children.props.typography === 'trafalgar'
+            ? getRankMinWidth(props).group0WithOneColumn // TODO update
+            : getRankMinWidth(props).group3WithOneColumn;
+        }
+        return 'auto';
+      }};
     }
   }
 `;
@@ -150,7 +171,7 @@ const StyledSpan = styled.span`
   ${({ script, typography }) =>
     script && typography === 'trafalgar'
       ? getTrafalgar(script)
-      : getFoolscap(script)};
+      : getFoolscap(script)}
   position: relative;
   color: ${C_POSTBOX};
   margin: 0; /* Reset */
